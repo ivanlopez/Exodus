@@ -1,0 +1,21 @@
+{
+	"name"             : "10up/exodus",
+	"description"      : "WordPress migration library.",
+	"license"          : "MIT",
+	"authors"          : [
+		{
+			"name" : "Ivan Lopez",
+			"email": "ivan@10up.com"
+		}
+	],
+	"version"          : "1.0.0",
+	"type"             : "wordpress-library",
+	"minimum-stability": "stable",
+	"require"          : { },
+	"require-dev"      : {
+		"10up/wp_mock"        : "dev-master",
+		"antecedent/patchwork": "1.2.*",
+		"phpunit/phpunit"     : "*@stable",
+		"brianium/paratest"   : "dev-master"
+	}
+}
