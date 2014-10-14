@@ -1,4 +1,4 @@
 Exodus
 ======
 
-WordPress migration Library
+WordPress migration library
