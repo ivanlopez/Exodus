@@ -1,0 +1,7 @@
+<?php
+
+namespace TenUp\Exodus\Migrator\Module;
+
+final class JSON extends Base_Importer {
+
+}
