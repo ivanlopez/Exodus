@@ -10,9 +10,8 @@ class Migrator{
 
 	protected $schema;
 
-	function __construct( Base_Importer $importer, $schema ) {
+	function __construct( Base_Importer $importer ) {
 		$this->importer = $importer;
-		$this->schema = $schema;
 	}
 
 }

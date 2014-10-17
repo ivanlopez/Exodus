@@ -30,7 +30,6 @@ abstract class Content_Import {
 			'post_excerpt'  => $excerpt,
 			'post_date'     => $date,
 			'post_date_gmt' => $date_gmt,
-			'post_modified' => $post_modified,
 		);
 
 		if ( $wp_id ) {
