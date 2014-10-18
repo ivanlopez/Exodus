@@ -17,5 +17,10 @@
 		"antecedent/patchwork": "1.2.*",
 		"phpunit/phpunit"     : "*@stable",
 		"brianium/paratest"   : "dev-master"
+	},
+	"autoload"   : {
+		"psr-4"   : {
+			"TenUp\\Exodus\\": "./"
+		}
 	}
 }

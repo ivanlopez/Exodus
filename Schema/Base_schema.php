@@ -8,6 +8,10 @@ abstract class Base_Schema {
 
 	public $site;
 
+	public $iterator;
+
+	public $post_type_keys;
+
 	public function build(){
 
 	}

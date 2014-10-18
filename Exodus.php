@@ -2,10 +2,11 @@
 
 namespace TenUp\Exodus;
 
-use TenUp\Exodus\Migrator\Migrator;
-use TenUp\Exodus\Migrator\Module\JSON;
+use TenUp\Exodus\Migrator\JSON;
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
+
+	require_once 'vendor/autoload.php';
 
 class Exodus extends \WP_CLI_Command{
 
@@ -22,23 +23,34 @@ class Exodus extends \WP_CLI_Command{
 	/**
 	 * Handle content import.
 	 *
-	 * @synopsis <file> --schema=<mapping-schema> [--force]
+	 * @synopsis <file> [--force]
 	 */
 	public function migrate( $args = array(), $assoc_args = array() ){
 		$file = $args[0];
-		if(  false !== strpos( $file, '.xml' ) || false !== strpos( $file, '.sql' ) || false !== strpos( $file, '.json' ) ){
-			WP_CLI::error( 'Error: a valid file type must be provided!' );
-		}
-
-		if( !isset( $assoc_args['schema'] ) ){
-			WP_CLI::error( 'Error: a schema file must be generate' );
+		if(  false !== strpos( $file, '.xml' ) || false !==  strpos( $file, '.sql' ) || false !==  strpos( $file, '.json' ) ){
+			\WP_CLI::line( 'Loading ' . $file . '...' );
 		} else {
-			$schema = new Temp_Schema();
+			\WP_CLI::error( 'Error: a valid file type must be provided' );
 		}
 
-		switch ( $schema->type() ) {
+		/*if( !isset( $assoc_args['schema'] ) ){
+			\WP_CLI::error( 'Error: a schema file must be generate' );
+		} else {*/
+
+			include_once 'Temp_Schema.php';
+			$schema = new Temp_Schema();
+		//}
+
+		$force = isset( $assoc_args['force'] ) ? true : false;
+
+		switch ( $schema->type ) {
 			case 'json':
-				$importer = new JSON( $file,  new Temp_Schema() );
+				$data = file_get_contents( $file );
+				if( ! $data ){
+					\WP_CLI::error( 'Error: could not load the specified file' );
+				}
+				$data = json_decode( $data );
+				$importer = new JSON( $data, $schema , $force );
 				break;
 			case 'sql':
 				break;
@@ -46,7 +58,7 @@ class Exodus extends \WP_CLI_Command{
 				break;
 		}
 
-		$migration = new Migrator( $importer );
+		$importer->import();
 	}
 
 }
