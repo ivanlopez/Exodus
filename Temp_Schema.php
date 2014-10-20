@@ -9,7 +9,7 @@ class Temp_Schema extends Base_Schema {
 
 	public $type = 'json';
 
-	public $site = 6;
+	public $site = 8;
 
 	public $iterator = 'response.posts';
 
@@ -24,9 +24,11 @@ class Temp_Schema extends Base_Schema {
 			$data->taxonomy( 'post_tag', 'tags' );
 		} );
 
-		$this->post_type_keys = Map::factory()->get_post_type_keys();
-
 		return Map::factory()->schema();
+	}
+
+	public function keys(){
+		return Map::factory()->keys();
 	}
 
 }

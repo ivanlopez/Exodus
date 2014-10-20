@@ -10,10 +10,9 @@ abstract class Base_Schema {
 
 	public $iterator;
 
-	public $post_type_keys;
+	public $keys;
 
-	public function build(){
+	abstract public function build();
 
-	}
-
-} 
+	abstract public function keys();
+}

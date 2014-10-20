@@ -1,53 +1,35 @@
 <?php
 
-namespace TenUp\Exodus\Migrator;
+namespace TenUp\Exodus\Migrator\Parsers;
 
-use TenUp\Exodus\Migrator\Base_Importer;
 use TenUp\Exodus\Schema\Base_Schema;
 
-final class JSON extends Base_Importer  implements Migrator{
+final class JSON extends Base_Parser{
 
-	protected $data;
-
-	protected $schema;
-
-	protected $force;
-
-	protected $schema_map;
-
-	function __construct( $data, Base_Schema $schema, $force ) {
-		$this->data = $data;
+	function __construct( $data, Base_Schema $schema ) {
 		$this->schema = $schema;
-		$this->force = $force;
 		$this->schema_map = $this->schema->build();
+		$this->schema_keys = $this->schema->keys();
+		$this->build_data( json_decode( $data ) );
 	}
 
-	public function import(){
-		if( isset( $this->schema->site ) ){
-			switch_to_blog( (int) $this->schema->site );
-		}
-		$this->data = $this->update_iterator_path( $this->data );
-		$total = count( $this->data );
+	protected function build_data( $data ){
+		$data = $this->update_iterator_path( $data );
+		$this->total = count( $data );
 
-		if( $total > 0){
-			$notify = new \cli\progress\Bar( "There's $total total post being imported.", $total );
-
-			foreach( $this->data as $content ){
-				$post = $this->build_post_object( $content );
-				if( $this->insert_post( $post, $this->force ) ){
-					$notify->tick();
-				}
+		if( $data > 0){
+			foreach( $data as $content ){
+				$this->content[] = $this->build_post_object( $content );
 			}
-			$notify->finish();
 		}
 	}
 
 	public function build_post_object( $content ){
 		$post = new \stdClass;
 
-		if( count( $this->schema->post_type_keys ) > 1 ){
+		if( count( $this->schema->keys ) > 1 ){
 				$post_type_key = $content[ $this->schema_map[0]['post_type'] ];
-				$schema = $this->schema_map[ $this->schema->post_type_keys[ $post_type_key ] ];
+				$schema = $this->schema_map[ $this->schema_keys[ $post_type_key ] ];
 		} else {
 			$schema = reset( $this->schema_map );
 			$post->post_type = 'post';

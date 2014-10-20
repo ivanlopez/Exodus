@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ivanlopez
- * Date: 10/16/14
- * Time: 3:25 PM
- */
 
 namespace TenUp\Exodus\Schema;
 
@@ -34,7 +28,7 @@ class Map {
 		return $this->map;
 	}
 
-	public function get_post_type_keys(){
+	public function keys(){
 		return $this->post_type_keys;
 	}
 
