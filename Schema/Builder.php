@@ -1,8 +1,6 @@
 <?php
 
 namespace TenUp\Exodus\Schema;
-use SebastianBergmann\Exporter\Exception;
-
 
 /**
  * Class Builder
