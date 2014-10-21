@@ -27,7 +27,7 @@ class Builder {
 		try {
 			$callback( $this );
 		} catch ( Exception $e ) {
-			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			\WP_CLI::error( 'Error: ' . $e->getMessage() );
 		}
 	}
 

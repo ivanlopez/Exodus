@@ -7,6 +7,10 @@ class ReportTest extends PHPUnit_Framework_TestCase {
 
 	protected $root;
 
+	public static function setUpBeforeClass() {
+		require_once dirname( __DIR__ ) . '/test-tools/wp-cli-mock.php';
+	}
+
 	public function setUp(){
 		$this->root = vfsStream::setup( 'root' );
 		mkdir( vfsStream::url('root') . '/migrations/' , 0755, false );
@@ -24,11 +28,5 @@ class ReportTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse( $this->root->hasChild( 'migrations/' . $file_name ) );
 		$report->generate(  vfsStream::url('root') . '/migrations/' );
 		$this->assertTrue( $this->root->hasChild( 'migrations/' . $file_name  ) );
-	}
-}
-
-class WP_CLI{
-	public static function success( $string ){
-
 	}
 }
