@@ -1,0 +1,19 @@
+<?php
+
+use TenUp\Exodus\Schema\Base_Schema;
+use TenUp\Exodus\Schema\Map;
+
+class {name} extends Base_Schema {
+
+	{properties}
+	public function build() {
+
+		{maps}
+		return Map::factory()->schema();
+	}
+
+	public function keys(){
+		return Map::factory()->keys();
+	}
+
+}

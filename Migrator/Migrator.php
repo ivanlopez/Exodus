@@ -32,6 +32,7 @@ class Migrator extends Base_Importer{
 				}
 			}
 			$notify->finish();
+			\WP_CLI::success( 'Your migration is complete' );
 		}
 	}
 }
