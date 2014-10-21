@@ -2,8 +2,20 @@
 
 namespace TenUp\Exodus\Migrator;
 
+/**
+ * Class Base_Importer
+ * @package TenUp\Exodus\Migrator
+ */
 abstract class Base_Importer {
 
+	/**
+	 * Insert a new post.
+	 *
+	 * @param $data
+	 * @param $force
+	 *
+	 * @return int|\WP_Error
+	 */
 	protected function insert_post( $data, $force ) {
 		global $wpdb;
 
@@ -63,6 +75,12 @@ abstract class Base_Importer {
 		return $wp_id;
 	}
 
+	/**
+	 * Insert meta data for the current post.
+	 *
+	 * @param $meta_fields
+	 * @param $post_id
+	 */
 	protected function post_meta( $meta_fields, $post_id ) {
 		if ( is_array( $meta_fields ) ) {
 			foreach ( $meta_fields as $key => $value ) {
@@ -83,6 +101,13 @@ abstract class Base_Importer {
 		}
 	}
 
+	/**
+	 * Insert taxonomy for current post and map it to this post. If taxonomy
+	 * exist just map the taxonomy to current post.
+	 *
+	 * @param $data
+	 * @param $post_id
+	 */
 	protected function taxonomy( $data, $post_id ) {
 		foreach ( $data as $key => $taxonomy ) {
 			$term_ids = array();
@@ -113,6 +138,13 @@ abstract class Base_Importer {
 		}
 	}
 
+	/**
+	 * Insert new user for current post. If user already exist just return user id.
+	 *
+	 * @param $user
+	 *
+	 * @return bool|int|null|\WP_Error
+	 */
 	protected function user( $user ) {
 
 		if ( $user_id = email_exists( $user->email ) ) {
@@ -143,6 +175,12 @@ abstract class Base_Importer {
 		return 1;
 	}
 
+	/**
+	 * Insert user meta data.
+	 *
+	 * @param $meta_fields
+	 * @param $user_id
+	 */
 	protected function user_meta( $meta_fields, $user_id ) {
 		if ( is_array( $meta_fields ) ) {
 			foreach ( $meta_fields as $key => $value ) {
@@ -151,6 +189,16 @@ abstract class Base_Importer {
 		}
 	}
 
+	/**
+	 * Scrape post content for any image and send them to
+	 * be uploaded into WordPress and replace the paths in
+	 * the post content.
+	 *
+	 * @param $content
+	 * @param $post_id
+	 *
+	 * @return mixed
+	 */
 	protected function media( $content, $post_id ) {
 		preg_match_all( '#<img(.*?)src="(.*?)"(.*?)>#', $content, $matches, PREG_SET_ORDER );
 
@@ -174,6 +222,14 @@ abstract class Base_Importer {
 		return $content;
 	}
 
+	/**
+	 * Upload images to the uploads folder.
+	 *
+	 * @param $path
+	 * @param $post_id
+	 *
+	 * @return bool
+	 */
 	protected function upload_media( $path, $post_id ) {
 		require_once( ABSPATH . 'wp-admin/includes/media.php' );
 		require_once( ABSPATH . 'wp-admin/includes/file.php' );

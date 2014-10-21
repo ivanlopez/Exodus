@@ -2,18 +2,34 @@
 
 namespace TenUp\Exodus\Schema\Console;
 
+/**
+ * Class Schema_Command
+ * @package TenUp\Exodus\Schema\Console
+ */
 class Schema_Command {
 
+	/**
+	 * Initiate the schema command and runs the create_migration_directory method
+	 */
 	function __construct() {
 		$this->create_migration_directory();
 	}
 
+	/**
+	 * Checks to see if a migrations folder exist in the wp-content
+	 * directory. If it does not exist than it created it.
+	 */
 	protected function create_migration_directory() {
 		if ( ! file_exists( WP_CONTENT_DIR . '/migrations/' ) ) {
 			mkdir( WP_CONTENT_DIR . '/migrations/', 0755, false );
 		}
 	}
 
+	/**
+	 * Generate a new migration file in the migrations folder.
+	 *
+	 * @param array $args
+	 */
 	public function create_migration_file( $args ) {
 		$stub       = file_get_contents( __DIR__ . '/stubs/schema.stub' );
 		$stub       = str_replace( '{name}', $this->sanitize_class_name( $args['name'] ), $stub );
@@ -65,6 +81,13 @@ class Schema_Command {
 		fclose( $migration );
 	}
 
+	/**
+	 * Returns a sanitized class name following WordPress standards.
+	 *
+	 * @param $name
+	 *
+	 * @return string
+	 */
 	public static function sanitize_class_name( $name ) {
 		$class_parts = array();
 		$class       = preg_replace( '#[^a-zA-Z_]#', '', $name );
@@ -76,6 +99,13 @@ class Schema_Command {
 		return implode( '_', $class_parts );
 	}
 
+	/**
+	 * Returns a sanitized file name.
+	 *
+	 * @param $name
+	 *
+	 * @return string
+	 */
 	public static function sanitize_file_name( $name ) {
 		$class_parts = array();
 		$class       = preg_replace( '#[^a-zA-Z_]#', '', $name );
@@ -87,6 +117,13 @@ class Schema_Command {
 		return implode( '-', $class_parts );
 	}
 
+	/**
+	 * Removed extra hard return created during string builds.
+	 *
+	 * @param $string
+	 *
+	 * @return mixed
+	 */
 	function remove_extra_return ( $string ) {
 		$lenOfSearch = strlen( "\n" );
 		$posOfSearch = strrpos( $string,  "\n"  );
