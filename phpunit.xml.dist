@@ -2,7 +2,7 @@
 	bootstrap="./bootstrap.php.dist"
 	backupGlobals="false"
 	processIsolation="false"
-	colors="false">
+	colors="true">
 	<testsuites></testsuites>
 	<groups>
 		<include></include>

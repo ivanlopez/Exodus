@@ -1,6 +1,7 @@
 <?php
 
 namespace TenUp\Exodus\Schema;
+use SebastianBergmann\Exporter\Exception;
 
 
 /**
@@ -25,7 +26,11 @@ class Builder {
 	 * @param $callback
 	 */
 	function __construct( $callback ) {
-		$callback( $this );
+		try {
+			$callback( $this );
+		} catch ( Exception $e ) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}
 	}
 
 	/**
@@ -35,7 +40,7 @@ class Builder {
 	 */
 	public function post_type( $key ) {
 		$this->data['post_type'] = $key;
-		$this->post_type         = $key;
+		$this->post_type_key     = $key;
 	}
 
 	/**
@@ -128,5 +133,15 @@ class Builder {
 	 */
 	public function get_post_type() {
 		return $this->post_type_key;
+	}
+
+	/**
+	 * Capture undeclared methods
+	 *
+	 * @param $name
+	 * @param $arguments
+	 */
+	public function __call( $name, $arguments ) {
+		throw new \Exception( 'The ' . $name . ' method does not exist.' );
 	}
 }
