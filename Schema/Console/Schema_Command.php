@@ -20,8 +20,8 @@ class Schema_Command {
 	 * directory. If it does not exist than it created it.
 	 */
 	protected function create_migration_directory() {
-		if ( ! file_exists( WP_CONTENT_DIR . '/migrations/' ) ) {
-			mkdir( WP_CONTENT_DIR . '/migrations/', 0755, false );
+		if ( ! file_exists( EXODUS_DIR ) ) {
+			mkdir( EXODUS_DIR, 0755, false );
 		}
 	}
 
@@ -76,7 +76,7 @@ class Schema_Command {
 		}
 		$stub = str_replace( '{maps}', $this->remove_extra_return( $map ), $stub );
 
-		$migration = fopen( WP_CONTENT_DIR . '/migrations/' . self::sanitize_file_name( $args['name'] ) . '.php', "w" );
+		$migration = fopen( EXODUS_DIR . self::sanitize_file_name( $args['name'] ) . '.php', "w" );
 		fwrite( $migration, $stub );
 		fclose( $migration );
 	}

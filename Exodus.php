@@ -11,6 +11,8 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 	require_once 'vendor/autoload.php';
 
+	define( 'EXODUS_DIR', WP_CONTENT_DIR . '/migrations/' );
+
 	/**
 	 * Exodus is a content migration library that allows you to
 	 * dynamically create content migrations.
@@ -62,7 +64,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			}
 
 			foreach ( $migration_files as $file ) {
-				include_once WP_CONTENT_DIR . '/migrations/' . $file;
+				include_once EXODUS_DIR . $file;
 				$class  = $this->class_name( $file );
 				$schema = new $class;
 				switch ( $schema->type ) {
@@ -132,11 +134,11 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 */
 		protected function get_migration_files() {
 			$files = array();
-			if ( ! file_exists( WP_CONTENT_DIR . '/migrations/' ) ) {
+			if ( ! file_exists( EXODUS_DIR ) ) {
 				return false;
 			}
 
-			if ( $handle = opendir( WP_CONTENT_DIR . '/migrations/' ) ) {
+			if ( $handle = opendir( EXODUS_DIR ) ) {
 				while ( false !== ( $file = readdir( $handle ) ) ) {
 					if ( $file !== "." && $file !== ".." && false !== strpos( strtolower( $file ), '.php' ) ) {
 						$files[] = $file;
