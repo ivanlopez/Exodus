@@ -16,7 +16,8 @@
 		"10up/wp_mock"        : "dev-master",
 		"antecedent/patchwork": "1.2.*",
 		"phpunit/phpunit"     : "*@stable",
-		"brianium/paratest"   : "dev-master"
+		"brianium/paratest"   : "dev-master",
+		"mikey179/vfsStream"   : "dev-master"
 	},
 	"autoload"   : {
 		"psr-4"   : {

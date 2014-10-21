@@ -38,6 +38,5 @@ class BuilderTest extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey( 'tax2', $data['taxonomy'] );
 	}
 
-
 }
  
