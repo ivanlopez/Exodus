@@ -1,11 +1,13 @@
 <?php
 
+use \TenUp\Exodus\Schema\Builder as Builder;
+
 class BuilderTest extends PHPUnit_Framework_TestCase {
 
 	protected $builder;
 
 	public function setUp() {
-		$this->builder = new \TenUp\Exodus\Schema\Builder( function( $data ){
+		$this->builder = new Builder( function( $data ){
 			$data->post_title('title');
 		} );
 	}
