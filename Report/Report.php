@@ -37,8 +37,8 @@ class Report {
 	/**
 	 * Generate a new CSV based on the rows added to this report.
 	 */
-	public function generate(){
-		$report = fopen( WP_CONTENT_DIR . '/migrations/URL-Report-' . date( 'Y-m-d', strtotime('now') ) . '.csv', 'w');
+	public function generate( $directory ){
+		$report = fopen( $directory . 'URL-Report-' . date( 'Y-m-d', strtotime('now') ) . '.csv', 'w');
 
 		foreach ($this->rows as $fields ) {
 			fputcsv($report, $fields);

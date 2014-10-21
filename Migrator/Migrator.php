@@ -70,7 +70,7 @@ class Migrator extends Base_Importer{
 			\WP_CLI::success( 'Your migration is complete' );
 
 			if( isset( $this->report ) ){
-				$this->report->generate();
+				$this->report->generate( EXODUS_DIR );
 			}
 		}
 	}
