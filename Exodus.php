@@ -120,7 +120,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			if ( isset( $assoc_args['report'] ) ) {
 				$schema_args['report'] = $assoc_args['report'];
 			}
-			$schema = new Schema_Command();
+			$schema = new Schema_Command( EXODUS_DIR );
 			$schema->create_migration_file( $schema_args );
 
 			\WP_CLI::success( $schema_args['name'] . ' migration file was generated' );

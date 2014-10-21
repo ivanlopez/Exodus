@@ -1,0 +1,25 @@
+<?php
+
+use TenUp\Exodus\Schema\Base_Schema;
+use TenUp\Exodus\Schema\Map;
+
+class Test_Migration extends Base_Schema {
+
+	public $type = 'json';
+
+	public function build() {
+
+		Map::factory()->create( 'post', function ( $data ) {
+				$data->post_title( 'title' );
+				$data->post_content( 'content' );
+				$data->post_date( 'timestamp' );
+			} );
+
+		return Map::factory()->schema();
+	}
+
+	public function keys(){
+		return Map::factory()->keys();
+	}
+
+}

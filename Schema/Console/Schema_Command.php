@@ -9,9 +9,15 @@ namespace TenUp\Exodus\Schema\Console;
 class Schema_Command {
 
 	/**
+	 * @var string directory where migration files live
+	 */
+	protected $directory;
+
+	/**
 	 * Initiate the schema command and runs the create_migration_directory method
 	 */
-	function __construct() {
+	function __construct( $directory ) {
+		$this->directory = $directory ;
 		$this->create_migration_directory();
 	}
 
@@ -20,8 +26,8 @@ class Schema_Command {
 	 * directory. If it does not exist than it created it.
 	 */
 	protected function create_migration_directory() {
-		if ( ! file_exists( EXODUS_DIR ) ) {
-			mkdir( EXODUS_DIR, 0755, false );
+		if ( ! file_exists( $this->directory ) ) {
+			mkdir( $this->directory, 0755, false );
 		}
 	}
 
@@ -76,7 +82,7 @@ class Schema_Command {
 		}
 		$stub = str_replace( '{maps}', $this->remove_extra_return( $map ), $stub );
 
-		$migration = fopen( EXODUS_DIR . self::sanitize_file_name( $args['name'] ) . '.php', "w" );
+		$migration = fopen( $this->directory . self::sanitize_file_name( $args['name'] ) . '.php', "w" );
 		fwrite( $migration, $stub );
 		fclose( $migration );
 	}
