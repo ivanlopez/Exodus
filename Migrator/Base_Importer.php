@@ -23,9 +23,9 @@ abstract class Base_Importer {
 
 		$date           = isset( $data->post_date ) ? $data->post_date : date( 'Y-m-d H:i:s', strtotime( 'now' ) );
 		$date           = is_int( $date ) ? date( 'Y-m-d H:i:s', $date ) : date( 'Y-m-d H:i:s', strtotime( $date ) );
-		$date_gmt       = isset( $data->post_date_gmt ) ? date( 'Y-m-d H:i:s',  $data->post_date_gmt ) : $date;
-		$date_gmt       = is_int( $date_gmt ) ?  date( 'Y-m-d H:i:s', $date_gmt ) : date( 'Y-m-d H:i:s', strtotime( $date_gmt ) );
-		$post_author    = isset( $data->post_author ) ? $this->user( $data->post_author ) : 1;
+		$date_gmt       = isset( $data->post_date_gmt ) ? date( 'Y-m-d H:i:s', $data->post_date_gmt ) : $date;
+		$date_gmt       = is_int( $date_gmt ) ? date( 'Y-m-d H:i:s', $date_gmt ) : date( 'Y-m-d H:i:s', strtotime( $date_gmt ) );
+		$post_author    = ( isset( $data->post_author ) && !empty( $data->post_author ) )? $this->user( $data->post_author ) : 1;
 		$migration_hash = md5( $data->post_title . $date );
 
 		// grab the existing post ID (if it exists).
@@ -130,7 +130,7 @@ abstract class Base_Importer {
 					$term_ids[] = $taxonomy_term['term_id'];
 				} else {
 					$taxonomy_term = wp_insert_term( $term_name, $key, $term_args );
-					$term_ids[] = $taxonomy_term['term_id'];
+					$term_ids[]    = $taxonomy_term['term_id'];
 				}
 			}
 
@@ -147,7 +147,7 @@ abstract class Base_Importer {
 	 */
 	protected function user( $user ) {
 
-		if ( $user_id = email_exists( $user->email ) ) {
+		if ( $user_id = email_exists( $user->user_email ) ) {
 			return $user_id;
 		} else if ( $user_id = username_exists( sanitize_user( $user->user_login ) ) ) {
 			return $user_id;
@@ -155,12 +155,12 @@ abstract class Base_Importer {
 			$userdata = array(
 				'user_login'    => sanitize_user( $user->user_login ),
 				'user_pass'     => wp_generate_password(),
-				'user_nicename' => $user->slug,
+				'user_nicename' => $user->user_login,
 				'nickname'      => $user->user_login,
 				'display_name'  => $user->user_login,
-				'user_email'    => $user->email,
-				'description'   => $user->description,
-				'user_url'      => $user->url
+				'first_name'    => isset( $user->first_name ) ? $user->first_name : '',
+				'last_name'     => isset( $user->last_name ) ? $user->last_name : '',
+				'user_email'    => isset( $user->user_email ) ? $user->user_email : '',
 			);
 
 			$user_id = wp_insert_user( $userdata );
@@ -252,29 +252,29 @@ abstract class Base_Importer {
 
 		// make sure we have a match.  This won't be set for PDFs and .docs
 		if ( $matches && isset( $matches[0] ) ) {
-		$name                   = str_replace( '%20', ' ', basename( $matches[0] ) );
-		$file_array['name']     = $name;
-		$file_array['tmp_name'] = $tmp;
+			$name                   = str_replace( '%20', ' ', basename( $matches[0] ) );
+			$file_array['name']     = $name;
+			$file_array['tmp_name'] = $tmp;
 
-		// If error storing temporarily, unlink
-		if ( is_wp_error( $tmp ) ) {
-			@unlink( $file_array['tmp_name'] );
-			$file_array['tmp_name'] = '';
-		}
+			// If error storing temporarily, unlink
+			if ( is_wp_error( $tmp ) ) {
+				@unlink( $file_array['tmp_name'] );
+				$file_array['tmp_name'] = '';
+			}
 
-		// do the validation and storage stuff
-		$id = media_handle_sideload( $file_array, $post_id, null, array() );
+			// do the validation and storage stuff
+			$id = media_handle_sideload( $file_array, $post_id, null, array() );
 
-		// If error storing permanently, unlink
-		if ( is_wp_error( $id ) ) {
-			@unlink( $file_array['tmp_name'] );
-			\WP_CLI::line( "Error: " . $id->get_error_message() );
-			\WP_CLI::line( "Filename: $old_filename" );
-		} else {
-			@unlink( $file_array['tmp_name'] );
+			// If error storing permanently, unlink
+			if ( is_wp_error( $id ) ) {
+				@unlink( $file_array['tmp_name'] );
+				\WP_CLI::line( "Error: " . $id->get_error_message() );
+				\WP_CLI::line( "Filename: $old_filename" );
+			} else {
+				@unlink( $file_array['tmp_name'] );
 
-			return $id;
-		}
+				return $id;
+			}
 
 		} else {
 			@unlink( $tmp );

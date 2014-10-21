@@ -44,7 +44,35 @@ abstract class Base_Parser {
 	 *
 	 * @return array
 	 */
-	public function get_content(){
+	public function get_content() {
 		return $this->content;
+	}
+
+	/**
+	 * Creates a user object
+	 *
+	 * @param $author
+	 *
+	 * @return \stdClass
+	 */
+	protected function setup_author( $author ) {
+		$user = new \stdClass();
+
+		if( empty( $author) || is_null($author) ){
+			return '';
+		}
+
+		if ( is_email( $author ) ) {
+			$user->user_email = $author;
+			$user->user_login = $author;
+		} else {
+			$name             = explode( ' ', $author );
+			$user->first_name = $name[0];
+			$user->last_name  = $name[1];
+			$user->user_login = $author;
+			$user->user_email = '';
+		}
+
+		return $user;
 	}
 } 

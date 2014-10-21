@@ -69,7 +69,11 @@ final class JSON extends Base_Parser {
 				}
 				$post->$content_key = $temp_schema_data;
 			} else {
-				$post->$content_key = $content->$schema_key;
+				if( 'post_author' === $content_key ){
+					$post->$content_key = $this->setup_author( $content->$schema_key );
+				} else {
+					$post->$content_key = $content->$schema_key;
+				}
 			}
 		}
 

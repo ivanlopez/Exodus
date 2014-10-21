@@ -46,7 +46,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			$force = isset( $assoc_args['force'] ) ? true : false;
 
 			if ( false !== strpos( $file, '.xml' ) || false !== strpos( $file, '.sql' ) || false !== strpos( $file, '.json' ) ) {
-				\WP_CLI::line( 'Loading ' . $file . '...' );
+				\WP_CLI::line( 'Loading ' . $file . ' ...' );
 			} else {
 				\WP_CLI::error( 'Error: a valid file type must be provided' );
 			}
@@ -68,6 +68,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				switch ( $schema->type ) {
 					case 'json':
 						$parser = new JSON( $data, $schema );
+						\WP_CLI::line( 'Parsing data ...' );
 						break;
 					case 'sql':
 						#TODO: SQL parser still needs to be created
