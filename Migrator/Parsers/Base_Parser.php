@@ -5,6 +5,8 @@ namespace TenUp\Exodus\Migrator\Parsers;
 
 class Base_Parser {
 
+	public $data;
+
 	public $schema;
 
 	protected $content = array();

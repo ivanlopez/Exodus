@@ -60,7 +60,7 @@ abstract class Base_Importer {
 			$this->taxonomy( $data->taxonomy, $wp_id );
 		}
 
-		return true;
+		return $wp_id;
 	}
 
 	protected function post_meta( $meta_fields, $post_id ) {

@@ -6,6 +6,8 @@ use TenUp\Exodus\Schema\Base_Schema;
 
 final class JSON extends Base_Parser{
 
+	public $data;
+
 	function __construct( $data, Base_Schema $schema ) {
 		$this->schema = $schema;
 		$this->schema_map = $this->schema->build();
@@ -15,6 +17,7 @@ final class JSON extends Base_Parser{
 
 	protected function build_data( $data ){
 		$data = $this->update_iterator_path( $data );
+		$this->data = $data;
 		$this->total = count( $data );
 
 		if( $data > 0){

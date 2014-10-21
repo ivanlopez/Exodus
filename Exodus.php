@@ -4,6 +4,8 @@ namespace TenUp\Exodus;
 
 use TenUp\Exodus\Migrator\Parsers\JSON;
 use TenUp\Exodus\Migrator\Migrator;
+use TenUp\Exodus\Report\Generators\URLS;
+use TenUp\Exodus\Report\Report;
 use TenUp\Exodus\Schema\Console\Schema_Command;
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -62,6 +64,11 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				}
 
 				$migrator = new Migrator( $parser, $force );
+
+				if( isset( $schema->report ) ){
+					$migrator->add_report( new Report( ) );
+				}
+
 				$migrator->run();
 			}
 		}
@@ -69,7 +76,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		/**
 		 * Create schema file.
 		 *
-		 * @synopsis <name> --type=<schema_type> [--post_types=<types>] [--site=<site_id>]  [--iterator=<iterator>]  [--report=<report_type>]
+		 * @synopsis <name> --type=<schema_type> [--post_types=<types>] [--site=<site_id>]  [--iterator=<iterator>]  [--report=<url_key>]
 		 */
 		public function schema( $args = array(), $assoc_args = array() ) {
 			$schema_args         = array();
