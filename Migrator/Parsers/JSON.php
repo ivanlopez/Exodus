@@ -32,7 +32,6 @@ final class JSON extends Base_Parser {
 	protected function build_data( $data ) {
 		$data        = $this->update_iterator_path( $data );
 		$this->data  = $data;
-		$this->total = count( $data );
 
 		if ( $data > 0 ) {
 			foreach ( $data as $content ) {

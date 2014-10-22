@@ -35,17 +35,21 @@ abstract class Base_Parser {
 	protected $schema_keys;
 
 	/**
-	 * @var int total post to be imported
-	 */
-	public $total = 0;
-
-	/**
 	 * Return the list of sanitized content.
 	 *
 	 * @return array
 	 */
 	public function get_content() {
 		return $this->content;
+	}
+
+	/**
+	 * Return the number of content pieces to be imported
+	 *
+	 * @return int
+	 */
+	public function get_content_count() {
+		return count( $this->content );
 	}
 
 	/**
@@ -58,7 +62,7 @@ abstract class Base_Parser {
 	protected function setup_author( $author ) {
 		$user = new \stdClass();
 
-		if( empty( $author) || is_null($author) ){
+		if ( empty( $author ) || is_null( $author ) ) {
 			return '';
 		}
 

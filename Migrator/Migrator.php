@@ -9,7 +9,7 @@ use TenUp\Exodus\Report\Report;
  * Class Migrator
  * @package TenUp\Exodus\Migrator
  */
-class Migrator extends Base_Importer{
+class Migrator extends Base_Importer {
 
 	/**
 	 * @var Base_Parser instance of the injected parser
@@ -29,7 +29,7 @@ class Migrator extends Base_Importer{
 	 */
 	function __construct( Base_Parser $parser, $force ) {
 		$this->parser = $parser;
-		$this->force = $force;
+		$this->force  = $force;
 	}
 
 	/**
@@ -37,7 +37,7 @@ class Migrator extends Base_Importer{
 	 *
 	 * @param Report $report
 	 */
-	public function add_report( Report $report ){
+	public function add_report( Report $report ) {
 		$this->report = $report;
 	}
 
@@ -46,32 +46,38 @@ class Migrator extends Base_Importer{
 	 * inserts it into the database. It also checks to see if a Report
 	 * has been injected in order to generate it.
 	 */
-	public function run(){
+	public function run( $pretend = false ) {
 
-		if( isset( $this->parser->schema->site ) ){
+		if ( isset( $this->parser->schema->site ) ) {
 			switch_to_blog( (int) $this->parser->schema->site );
 		}
 
-		$total = $this->parser->total;
+		$total = $this->parser->get_content_count();
+		$count = 0;
 
-		if( $total > 0){
+		if ( $total > 0 ) {
 			$notify = new \cli\progress\Bar( "There's $total total post being imported.", $total );
 
-			foreach( $this->parser->get_content() as $key => $content ){
-				if( $id = $this->insert_post( $content, $this->force ) ){
-					if( isset( $this->report ) ){
+			foreach ( $this->parser->get_content() as $key => $content ) {
+				if ( $id = $this->insert_post( $content, $this->force, $pretend ) ) {
+					$count ++;
+					if ( isset( $this->report ) ) {
 						$url = $this->parser->schema->report;
-						$this->report->add_row( array( $this->parser->data[ $key ]->$url , get_the_permalink( $id ) ) );
+						$this->report->add_row( array( $this->parser->data[ $key ]->$url, get_the_permalink( $id ) ) );
 					}
 					$notify->tick();
 				}
 			}
 			$notify->finish();
-			\WP_CLI::success( 'Your migration is complete' );
+			\WP_CLI::success( 'Your migration is complete. ' . $count . ' of ' . $total . ' post were migrated successfully' );
 
-			if( isset( $this->report ) ){
+			if ( isset( $this->report ) ) {
 				$this->report->generate( EXODUS_DIR );
 			}
+
+			return $count;
 		}
+
+		return false;
 	}
 }

@@ -6,7 +6,7 @@ class BuilderTest extends PHPUnit_Framework_TestCase {
 
 	protected $builder;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->builder = new Builder( function( $data ){
 			$data->post_title('title');
 		} );

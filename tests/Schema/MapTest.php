@@ -17,7 +17,7 @@ class MapTest extends PHPUnit_Framework_TestCase {
 		)
 	);
 
-	public function setUp() {
+	protected function setUp() {
 		Map::factory()->create( 'post', function ( $data ) {
 			$data->post_title( 'title' );
 			$data->post_type( 'post_type' );

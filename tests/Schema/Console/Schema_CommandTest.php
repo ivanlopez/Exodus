@@ -9,7 +9,7 @@ class Schema_CommandTest extends PHPUnit_Framework_TestCase {
 
 	protected $root;
 
-	public function setUp(){
+	protected function setUp(){
 		$this->root = vfsStream::setup( 'root' );
 		$this->schema = new Schema_Command( vfsStream::url('root') . '/migrations/' );
 	}

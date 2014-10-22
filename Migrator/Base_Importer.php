@@ -16,16 +16,19 @@ abstract class Base_Importer {
 	 *
 	 * @return int|\WP_Error
 	 */
-	protected function insert_post( $data, $force ) {
+	protected function insert_post( $data, $force = false, $pretend = false ) {
 		global $wpdb;
 
-		$excerpt = isset( $data->post_excerpt ) ? $data->post_excerpt : '';
+		if ( $pretend ) {
+			return 1;
+		}
 
+		$excerpt        = isset( $data->post_excerpt ) ? $data->post_excerpt : '';
 		$date           = isset( $data->post_date ) ? $data->post_date : date( 'Y-m-d H:i:s', strtotime( 'now' ) );
 		$date           = is_int( $date ) ? date( 'Y-m-d H:i:s', $date ) : date( 'Y-m-d H:i:s', strtotime( $date ) );
 		$date_gmt       = isset( $data->post_date_gmt ) ? date( 'Y-m-d H:i:s', $data->post_date_gmt ) : $date;
 		$date_gmt       = is_int( $date_gmt ) ? date( 'Y-m-d H:i:s', $date_gmt ) : date( 'Y-m-d H:i:s', strtotime( $date_gmt ) );
-		$post_author    = ( isset( $data->post_author ) && !empty( $data->post_author ) )? $this->user( $data->post_author ) : 1;
+		$post_author    = ( isset( $data->post_author ) && ! empty( $data->post_author ) ) ? $this->user( $data->post_author ) : 1;
 		$migration_hash = md5( $data->post_title . $date );
 
 		// grab the existing post ID (if it exists).
