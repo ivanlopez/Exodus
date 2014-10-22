@@ -1,9 +1,10 @@
 <?php
 
 use TenUp\Exodus\Migrator\Parsers\JSON as JSON;
+use TenUp\Exodus\TestCase as TestCase;
 
 
-class JSONTest extends PHPUnit_Framework_TestCase{
+class JSONTest extends TestCase{
 
 	protected $json_parser;
 
@@ -60,14 +61,6 @@ class JSONTest extends PHPUnit_Framework_TestCase{
 	public  function tearDown() {
 		parent::tearDown();
 		\Mockery::close();
-	}
-
-	public function invokeMethod( &$object, $methodName, array $parameters = array() ) {
-		$reflection = new \ReflectionClass( get_class( $object ) );
-		$method     = $reflection->getMethod( $methodName );
-		$method->setAccessible( true );
-
-		return $method->invokeArgs( $object, $parameters );
 	}
 
 	protected function get_data() {
