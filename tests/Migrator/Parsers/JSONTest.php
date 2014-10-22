@@ -2,18 +2,24 @@
 
 use TenUp\Exodus\Migrator\Parsers\JSON as JSON;
 
-function is_email() {
-	return false;
-}
 
-class JSONTest extends PHPUnit_Framework_TestCase {
+class JSONTest extends \WP_Mock\Tools\TestCase{
 
 	protected $json_parser;
 
-	protected function setUp() {
+	public function setUp() {
+		parent::setUp();
 		$schema = Mockery::mock( 'TenUp\Exodus\Schema\Base_Schema' );
 		$schema->shouldReceive( 'build' )->andReturn( $this->get_schema_build() )->once();
 		$schema->shouldReceive( 'keys' )->andReturn( $this->get_key_build() )->once();
+
+		$content = json_decode( $this->get_data() );
+
+		\WP_Mock::wpFunction( 'is_email', array(
+			'times' => '2+',
+			'args' => array( $content[0]->author ),
+			'return' => false
+		) );
 
 		$this->json_parser = new JSON( $this->get_data(), $schema );
 	}
@@ -51,7 +57,8 @@ class JSONTest extends PHPUnit_Framework_TestCase {
 		$this->assertObjectHasAttribute( 'user_login', $import_object->post_author );
 	}
 
-	protected function tearDown() {
+	public  function tearDown() {
+		parent::tearDown();
 		\Mockery::close();
 	}
 
