@@ -66,7 +66,7 @@ abstract class Base_Parser {
 			return '';
 		}
 
-		if ( is_email( $author ) ) {
+		if ( \is_email( $author ) ) {
 			$user->user_email = $author;
 			$user->user_login = $author;
 		} else {
