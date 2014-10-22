@@ -3,7 +3,7 @@
 use TenUp\Exodus\Migrator\Parsers\JSON as JSON;
 
 
-class JSONTest extends \WP_Mock\Tools\TestCase{
+class JSONTest extends PHPUnit_Framework_TestCase{
 
 	protected $json_parser;
 
