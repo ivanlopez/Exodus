@@ -15,11 +15,11 @@ class Bar {
 
 	}
 
-	public function tick(){
+	public function tick() {
 
 	}
 
-	public function finish(){
+	public function finish() {
 
 	}
 }
