@@ -28,5 +28,8 @@ class ReportTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse( $this->root->hasChild( 'migrations/' . $file_name ) );
 		$report->generate(  vfsStream::url('root') . '/migrations/' );
 		$this->assertTrue( $this->root->hasChild( 'migrations/' . $file_name  ) );
+
+		$csv = file( vfsStream::url('root') . '/migrations/' . $file_name , FILE_SKIP_EMPTY_LINES);
+		$this->assertEquals( 4, count( $csv ) );
 	}
 }
