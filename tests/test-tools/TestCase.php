@@ -18,7 +18,7 @@ class TestCase extends BaseTestCase {
 	 *
 	 * @return mixed
 	 */
-	public function invokeMethod( &$object, $methodName, array $parameters = array() ) {
+	public function invoke_protected_method( &$object, $methodName, array $parameters = array() ) {
 		$reflection = new \ReflectionClass( get_class( $object ) );
 		$method     = $reflection->getMethod( $methodName );
 		$method->setAccessible( true );

@@ -39,17 +39,17 @@ class JSONTest extends TestCase{
 			)
 		) ), false );
 
-		$iterator = $this->invokeMethod( $this->json_parser, 'update_iterator_path', array( $data ) );
+		$iterator = $this->invoke_protected_method( $this->json_parser, 'update_iterator_path', array( $data ) );
 		$this->assertObjectHasAttribute( 'item', $iterator );
 
 		$this->json_parser->schema->iterator = 'child.childitem';
-		$update_iterator                     = $this->invokeMethod( $this->json_parser, 'update_iterator_path', array( $data->item ) );
+		$update_iterator                     = $this->invoke_protected_method( $this->json_parser, 'update_iterator_path', array( $data->item ) );
 		$this->assertEquals( 'content', $update_iterator );
 	}
 
 	public function testBuildingPostObject() {
 		$content = $this->json_parser->data;
-		$import_object = $this->invokeMethod( $this->json_parser, 'build_post_object', array( $content[0] ) );
+		$import_object = $this->invoke_protected_method( $this->json_parser, 'build_post_object', array( $content[0] ) );
 
 		$this->assertObjectHasAttribute( 'post_title', $import_object );
 		$this->assertObjectHasAttribute( 'post_date', $import_object );
