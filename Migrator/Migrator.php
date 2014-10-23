@@ -79,9 +79,9 @@ class Migrator extends Base_Importer {
 					if ( isset( $this->parser->schema->report ) ) {
 						$url = $this->parser->schema->report;
 						$this->report['url']->add_row( array(
-								$this->parser->data[ $key ]->$url,
-								get_the_permalink( $id )
-							) );
+							$this->parser->data[ $key ]->$url,
+							get_the_permalink( $id )
+						) );
 					}
 					if ( isset( $this->validator ) ) {
 						if ( $this->validator->should_compare( $key ) && ! ( $post = $this->validator->compare( $content, $id ) ) ) {
@@ -109,8 +109,8 @@ class Migrator extends Base_Importer {
 
 			if ( isset( $this->validator ) ) {
 				$total_checked = count( $this->validator->check );
-				$pass = $total_checked - ( count( $this->report['validator']->rows ) - 1);
-				\WP_CLI::success( 'Your validation is complete. ' . $this->parser->schema->verify . '% of the imported post were checked and '. $pass . ' of ' . $total_checked . ' validated successfully!' );
+				$pass          = $total_checked - ( count( $this->report['validator']->rows ) - 1 );
+				\WP_CLI::success( 'Your validation is complete. ' . $this->parser->schema->verify . '% of the imported post were checked and ' . $pass . ' of ' . $total_checked . ' validated successfully!' );
 			}
 
 			return $count;

@@ -23,7 +23,7 @@ class Report {
 	 */
 	function __construct( $name, $header = null ) {
 		$this->name = $name;
-		if( !is_null( $header ) ){
+		if ( ! is_null( $header ) ) {
 			$this->rows[] = $header;
 		}
 	}
@@ -40,14 +40,14 @@ class Report {
 	/**
 	 * Generate a new CSV based on the rows added to this report.
 	 */
-	public function generate( $directory ){
-		$report = fopen( $directory .  $this->name . '-' . date( 'Y-m-d', strtotime('now') ) . '.csv', 'w');
+	public function generate( $directory ) {
+		$report = fopen( $directory . $this->name . '-' . date( 'Y-m-d', strtotime( 'now' ) ) . '.csv', 'w' );
 
-		foreach ($this->rows as $fields ) {
-			fputcsv($report, $fields);
+		foreach ( $this->rows as $fields ) {
+			fputcsv( $report, $fields );
 		}
 
-		fclose($report);
+		fclose( $report );
 
 		\WP_CLI::success( 'Your migration report was generated!' );
 	}

@@ -72,7 +72,7 @@ class Validator {
 	 * Check to see if the imported meta data matches whats in the database.
 	 *
 	 * @param array $meta_data
-	 * @param int $id
+	 * @param int   $id
 	 *
 	 * @return bool
 	 */
@@ -99,7 +99,7 @@ class Validator {
 	 * Check to see if imported taxonomy matches whats in the database.
 	 *
 	 * @param array $taxonomies
-	 * @param int $id
+	 * @param int   $id
 	 *
 	 * @return bool
 	 */

@@ -72,7 +72,7 @@ abstract class Base_Parser {
 		} else {
 			$name             = explode( ' ', $author );
 			$user->first_name = $name[0];
-			$user->last_name  = $name[1];
+			$user->last_name = $name[1];
 			$user->user_login = $author;
 			$user->user_email = '';
 		}

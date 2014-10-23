@@ -30,8 +30,8 @@ final class JSON extends Base_Parser {
 	 * @param array $data
 	 */
 	protected function build_data( $data ) {
-		$data        = $this->update_iterator_path( $data );
-		$this->data  = $data;
+		$data       = $this->update_iterator_path( $data );
+		$this->data = $data;
 
 		if ( $data > 0 ) {
 			foreach ( $data as $content ) {
@@ -68,7 +68,7 @@ final class JSON extends Base_Parser {
 				}
 				$post->$content_key = $temp_schema_data;
 			} else {
-				if( 'post_author' === $content_key ){
+				if ( 'post_author' === $content_key ) {
 					$post->$content_key = $this->setup_author( $content->$schema_key );
 				} else {
 					$post->$content_key = $content->$schema_key;

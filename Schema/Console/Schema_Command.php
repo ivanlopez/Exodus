@@ -17,7 +17,7 @@ class Schema_Command {
 	 * Initiate the schema command and runs the create_migration_directory method
 	 */
 	function __construct( $directory ) {
-		$this->directory = $directory ;
+		$this->directory = $directory;
 		$this->create_migration_directory();
 	}
 
@@ -65,7 +65,7 @@ class Schema_Command {
 			$first_loop = true;
 			if ( count( $post_types ) > 0 ) {
 				foreach ( $post_types as $post ) {
-					if( !$first_loop  ){
+					if ( ! $first_loop ) {
 						$map .= "		";
 					}
 					$map .= "Map::factory()->create( '" . strtolower( $post ) . "', function ( \$data ) {
@@ -134,9 +134,10 @@ class Schema_Command {
 	 *
 	 * @return mixed
 	 */
-	function remove_extra_return ( $string ) {
+	function remove_extra_return( $string ) {
 		$lenOfSearch = strlen( "\n" );
-		$posOfSearch = strrpos( $string,  "\n"  );
+		$posOfSearch = strrpos( $string, "\n" );
+
 		return substr_replace( $string, "", $posOfSearch, $lenOfSearch );
 	}
 }
