@@ -41,7 +41,8 @@ class Report {
 	 * Generate a new CSV based on the rows added to this report.
 	 */
 	public function generate( $directory ) {
-		$report = fopen( $directory . $this->name . '-' . date( 'Y-m-d', strtotime( 'now' ) ) . '.csv', 'w' );
+		$file = $this->name . '-' . date( 'Y-m-d', strtotime( 'now' ) ) . '.csv';
+		$report = fopen( $directory . $file, 'w' );
 
 		foreach ( $this->rows as $fields ) {
 			fputcsv( $report, $fields );
@@ -49,6 +50,6 @@ class Report {
 
 		fclose( $report );
 
-		\WP_CLI::success( 'Your report was generated! You can find the it in the wp-content/migrations/ directory.' );
+		\WP_CLI::success( 'Your report named ' . $file . ' was generated successfully! You can find the it in the wp-content/migrations/ directory.' );
 	}
 }
