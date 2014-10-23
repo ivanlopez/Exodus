@@ -49,6 +49,6 @@ class Report {
 
 		fclose( $report );
 
-		\WP_CLI::success( 'Your migration report was generated!' );
+		\WP_CLI::success( 'Your report was generated! You can find the it in the wp-content/migrations/ directory.' );
 	}
 }
