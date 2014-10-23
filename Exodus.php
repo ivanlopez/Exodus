@@ -102,12 +102,13 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * [--iterator]     the nesting of where the post are in your import file
 		 * [--report]       name of the url parameter in your import file in order to export a csv of old to new urls
 		 *
-		 * @synopsis <name> --type=<schema_type> [--post_types=<types>] [--site=<site_id>]  [--iterator=<iterator>]  [--report=<url_key>]
+		 * @synopsis <name> --type=<schema_type> [--post_types=<types>] [--site=<site_id>]  [--iterator=<iterator>]  [--report=<url_key>]  [--verify=<percent>]
 		 */
 		public function schema( $args = array(), $assoc_args = array() ) {
 			$schema_args         = array();
 			$schema_args['name'] = $args[0];
 			$schema_args['type'] = $assoc_args['type'];
+
 			if ( isset( $assoc_args['post_types'] ) ) {
 				$schema_args['post_types'] = $assoc_args['post_types'];
 			}
@@ -119,6 +120,11 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			}
 			if ( isset( $assoc_args['report'] ) ) {
 				$schema_args['report'] = $assoc_args['report'];
+			}
+			if ( isset( $assoc_args['verify'] ) ) {
+				$verify                = (int) $assoc_args['verify'];
+				$verify                = ( $verify > 100 ) ? 100 : $verify;
+				$schema_args['verify'] = $verify;
 			}
 			$schema = new Schema_Command( EXODUS_DIR );
 			$schema->create_migration_file( $schema_args );

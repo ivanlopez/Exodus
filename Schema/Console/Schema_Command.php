@@ -54,6 +54,10 @@ class Schema_Command {
 			$propertied .= "	public \$report = '" . $args['report'] . "';\n\n";
 		}
 
+		if ( isset( $args['verify'] ) ) {
+			$propertied .= "	public \$verify= '" . $args['verify'] . "';\n\n";
+		}
+
 		$stub = str_replace( '{properties}', self::remove_extra_return( $propertied ), $stub );
 
 		if ( isset( $args['post_types'] ) ) {

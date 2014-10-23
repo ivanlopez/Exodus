@@ -125,7 +125,7 @@ abstract class Base_Importer {
 					if ( $parent_term = term_exists( $term['parent'], $key ) ) {
 						$term_args['parent'] = $parent_term['term_id'];
 					} else {
-						$term_args['parent'] = wp_insert_term( $parent_term_name, $key );
+						$term_args['parent'] = wp_insert_term( $parent_term_name, $key );x
 					}
 				}*/
 

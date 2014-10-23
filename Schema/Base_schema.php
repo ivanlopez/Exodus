@@ -24,6 +24,11 @@ abstract class Base_Schema {
 	public $iterator;
 
 	/**
+	 * @var int percentage (1-100) of how many post to verify that were imported successfully
+	 */
+	public $verify;
+
+	/**
 	 * @var string name of the url parameter in your import file in order to export a csv of old to new urls
 	 */
 	public $keys;
