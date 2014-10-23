@@ -44,7 +44,7 @@ Sample JSON import file
 "post_url": "http://test.com/test-title-2/",
 "post_id": 1234,
 "tags" : []
-}]'
+}]
 ```
 
 Sample Schema Map
