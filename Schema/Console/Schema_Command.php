@@ -55,7 +55,7 @@ class Schema_Command {
 		}
 
 		if ( isset( $args['verify'] ) ) {
-			$propertied .= "	public \$verify= '" . $args['verify'] . "';\n\n";
+			$propertied .= "	public \$verify = " . $args['verify'] . ";\n\n";
 		}
 
 		$stub = str_replace( '{properties}', self::remove_extra_return( $propertied ), $stub );

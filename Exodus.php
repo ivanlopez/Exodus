@@ -2,6 +2,7 @@
 
 namespace TenUp\Exodus;
 
+use TenUp\Exodus\Database\Validator;
 use TenUp\Exodus\Migrator\Parsers\JSON;
 use TenUp\Exodus\Migrator\Migrator;
 use TenUp\Exodus\Report\Report;
@@ -38,13 +39,15 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * In order to use this command a file must me passed in and
 		 * a migration file must be generated.
 		 *
-		 * <file>       path to a valid file. Supported file formats are xml, sql, and json
+		 * <migration>  name of the migration ( file name without .php )
+		 * --file       path to a valid file. Supported file formats are xml, sql, and json
 		 * [--force]    skip to see if post already exist before importing
 		 *
-		 * @synopsis <file> [--force]
+		 * @synopsis <migration> --file=<file_path> [--force]
 		 */
 		public function migrate( $args = array(), $assoc_args = array() ) {
-			$file  = $args[0];
+			$migration  = $args[0];
+			$file  = $assoc_args['file'];
 			$force = isset( $assoc_args['force'] ) ? true : false;
 
 			if ( false !== strpos( $file, '.xml' ) || false !== strpos( $file, '.sql' ) || false !== strpos( $file, '.json' ) ) {
@@ -59,37 +62,50 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				\WP_CLI::error( 'Error: Could not load the specified file.' );
 			}
 
-			if ( ! $migration_files = $this->get_migration_files() ) {
-				\WP_CLI::error( 'Error: A schema file needs to be generated first.' );
+			if ( ! $migration_file = $this->get_migration_file( $migration ) ) {
+				\WP_CLI::error( 'Error: The ' . $migration . ' schema file was not found.' );
 			}
 
-			foreach ( $migration_files as $file ) {
-				include_once EXODUS_DIR . $file;
-				$class  = $this->class_name( $file );
-				$schema = new $class;
-				switch ( $schema->type ) {
-					case 'json':
-						$parser = new JSON( $data, $schema );
-						\WP_CLI::line( 'Parsing JSON data ...' );
-						break;
-					case 'sql':
-						#TODO: SQL parser still needs to be created
-						\WP_CLI::error( 'Error: SQL parser still needs to be created.' );
-						break;
-					case 'xml':
-						#TODO: XML parser still needs to be created
-						\WP_CLI::error( 'Error: XML parser still needs to be created.' );
-						break;
-				}
-
-				$migrator = new Migrator( $parser, $force );
-
-				if ( isset( $schema->report ) ) {
-					$migrator->add_report( new Report() );
-				}
-
-				$migrator->run();
+			include_once EXODUS_DIR . $migration_file;
+			$class  = $this->class_name( $migration_file );
+			$schema = new $class;
+			switch ( $schema->type ) {
+				case 'json':
+					$parser = new JSON( $data, $schema );
+					\WP_CLI::line( 'Parsing JSON data ...' );
+					break;
+				case 'sql':
+					#TODO: SQL parser still needs to be created
+					\WP_CLI::error( 'Error: SQL parser still needs to be created.' );
+					break;
+				case 'xml':
+					#TODO: XML parser still needs to be created
+					\WP_CLI::error( 'Error: XML parser still needs to be created.' );
+					break;
 			}
+
+			$migrator    = new Migrator( $parser, $force );
+			$report_name = str_replace( '_', '-', $class );
+
+			if ( isset( $schema->report ) ) {
+				$migrator->add_report( new Report( $report_name . '-URL-Report', array(
+							'Old URL',
+							'New URL'
+						) ), 'url' );
+			}
+
+			if ( isset( $schema->verify ) ) {
+				$validator = new Validator();
+				$validator->setup( $schema->verify, $parser->get_content_count() );
+				$migrator->add_validator( $validator );
+				$migrator->add_report( new Report( $report_name . '-Validator-Report', array(
+							'Original Content Key',
+							'Post Title',
+							'Post URL'
+						) ), 'validator' );
+			}
+
+			$migrator->run();
 		}
 
 		/**
@@ -138,16 +154,17 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 *
 		 * @return array|bool
 		 */
-		protected function get_migration_files() {
-			$files = array();
+		protected function get_migration_file( $file_slug ) {
+
 			if ( ! file_exists( EXODUS_DIR ) ) {
 				return false;
 			}
 
 			if ( $handle = opendir( EXODUS_DIR ) ) {
 				while ( false !== ( $file = readdir( $handle ) ) ) {
-					if ( $file !== "." && $file !== ".." && false !== strpos( strtolower( $file ), '.php' ) ) {
-						$files[] = $file;
+					if ( $file !== "." && $file !== ".." && false !== strpos( strtolower( $file ), $file_slug .'.php' ) ) {
+						$files = $file;
+						break;
 					}
 				}
 				closedir( $handle );

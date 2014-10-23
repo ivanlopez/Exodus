@@ -2,8 +2,6 @@
 
 namespace TenUp\Exodus\Database;
 
-use TenUp\Exodus\Schema\Base_Schema;
-
 /**
  * Class Validator
  * @package TenUp\Exodus\Database
@@ -45,13 +43,13 @@ class Validator {
 		foreach ( $content as $key => $value ) {
 			if ( isset( $post->$key ) ) {
 				if ( $this->strip_image_paths( $value, $key ) !== $this->strip_image_paths( $content->$key, $key ) ) {
-					return $id;
+					return $post;
 				}
 			} else {
 				if ( 'meta_data' === $key && ! $this->check_post_meta( $value, $id ) ) {
-					return $id;
+					return $post;
 				} elseif ( 'taxonomy' === $key && ! $this->check_post_terms( $value, $id ) ) {
-					return $id;
+					return $post;
 				}
 			}
 		}
@@ -129,7 +127,7 @@ class Validator {
 	 * @return mixed
 	 */
 	protected function strip_image_paths( $content, $key ) {
-		return ( 'post_content' === $key ) ? $content : preg_replace( "~src=[']([^']+)[']~e", '', $content );
+		return ( 'post_content' === $key ) ? preg_replace( "~src=[']([^']+)[']~e", '', $content ) : $content;
 	}
 
 }

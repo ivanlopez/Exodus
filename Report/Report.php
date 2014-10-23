@@ -11,18 +11,21 @@ class Report {
 	/**
 	 * @var array list of rows to be exported in the report
 	 */
-	protected $rows = array();
+	public $rows = array();
 
 	/**
-	 * @var array list of header for the report
+	 * @var string file name for your report
 	 */
-	protected $header = array( 'Original URL', 'New URL' );
+	protected $name = 'URL-Report';
 
 	/**
 	 * Setup header in the report.
 	 */
-	function __construct(  ) {
-		$this->rows[] = $this->header;
+	function __construct( $name, $header = null ) {
+		$this->name = $name;
+		if( !is_null( $header ) ){
+			$this->rows[] = $header;
+		}
 	}
 
 	/**
@@ -38,7 +41,7 @@ class Report {
 	 * Generate a new CSV based on the rows added to this report.
 	 */
 	public function generate( $directory ){
-		$report = fopen( $directory . 'URL-Report-' . date( 'Y-m-d', strtotime('now') ) . '.csv', 'w');
+		$report = fopen( $directory .  $this->name . '-' . date( 'Y-m-d', strtotime('now') ) . '.csv', 'w');
 
 		foreach ($this->rows as $fields ) {
 			fputcsv($report, $fields);

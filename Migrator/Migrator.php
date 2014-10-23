@@ -4,6 +4,7 @@ namespace TenUp\Exodus\Migrator;
 
 use TenUp\Exodus\Migrator\Parsers\Base_Parser;
 use TenUp\Exodus\Report\Report;
+use TenUp\Exodus\Database\Validator;
 
 /**
  * Class Migrator
@@ -17,9 +18,14 @@ class Migrator extends Base_Importer {
 	protected $parser;
 
 	/**
-	 * @var Report instance of the injected report
+	 * @var array instance of the injected report
 	 */
 	protected $report;
+
+	/**
+	 * @var Validator instance of the injected validator
+	 */
+	protected $validator;
 
 	/**
 	 * Setup Migrator dependencies.
@@ -37,8 +43,17 @@ class Migrator extends Base_Importer {
 	 *
 	 * @param Report $report
 	 */
-	public function add_report( Report $report ) {
-		$this->report = $report;
+	public function add_report( Report $report, $name ) {
+		$this->report[ $name ] = $report;
+	}
+
+	/**
+	 * Inject Report to Migrator.
+	 *
+	 * @param Report $report
+	 */
+	public function add_validator( Validator $validator ) {
+		$this->validator = $validator;
 	}
 
 	/**
@@ -61,9 +76,22 @@ class Migrator extends Base_Importer {
 			foreach ( $this->parser->get_content() as $key => $content ) {
 				if ( $id = $this->insert_post( $content, $this->force, $pretend ) ) {
 					$count ++;
-					if ( isset( $this->report ) ) {
+					if ( isset( $this->parser->schema->report ) ) {
 						$url = $this->parser->schema->report;
-						$this->report->add_row( array( $this->parser->data[ $key ]->$url, get_the_permalink( $id ) ) );
+						$this->report['url']->add_row( array(
+								$this->parser->data[ $key ]->$url,
+								get_the_permalink( $id )
+							) );
+					}
+					if ( isset( $this->validator ) ) {
+						if ( $this->validator->should_compare( $key ) && ! ( $post = $this->validator->compare( $content, $id ) ) ) {
+							//Content did not match so we add the post to the report
+							$this->report['validator']->add_row( array(
+								$key,
+								$post->post_title,
+								$post->guid
+							) );
+						}
 					}
 					$notify->tick();
 				}
@@ -72,7 +100,17 @@ class Migrator extends Base_Importer {
 			\WP_CLI::success( 'Your migration is complete. ' . $count . ' of ' . $total . ' post were migrated successfully!' );
 
 			if ( isset( $this->report ) ) {
-				$this->report->generate( EXODUS_DIR );
+				foreach ( $this->report as $report ) {
+					if ( count( $report->rows ) > 1 ) {
+						$report->generate( EXODUS_DIR );
+					}
+				}
+			}
+
+			if ( isset( $this->validator ) ) {
+				$total_checked = count( $this->validator->check );
+				$pass = $total_checked - ( count( $this->report['validator']->rows ) - 1);
+				\WP_CLI::success( 'Your validation is complete. ' . $this->parser->schema->verify . '% of the imported post were checked and '. $pass . ' of ' . $total_checked . ' validated successfully!' );
 			}
 
 			return $count;
