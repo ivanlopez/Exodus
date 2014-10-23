@@ -47,6 +47,7 @@ Sample JSON import file
 }]'
 ```
 
+Sample Schema Map
 ```bash
 Map::factory()->create( 'post', function ( $data ) {
 	$data->post_title( 'title' );
