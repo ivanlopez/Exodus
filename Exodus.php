@@ -46,9 +46,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @synopsis <migration> --file=<file_path> [--force]
 		 */
 		public function migrate( $args = array(), $assoc_args = array() ) {
-			$migration  = $args[0];
-			$file  = $assoc_args['file'];
-			$force = isset( $assoc_args['force'] ) ? true : false;
+			$migration = $args[0];
+			$file      = $assoc_args['file'];
+			$force     = isset( $assoc_args['force'] ) ? true : false;
 
 			if ( false !== strpos( $file, '.xml' ) || false !== strpos( $file, '.sql' ) || false !== strpos( $file, '.json' ) ) {
 				\WP_CLI::line( 'Loading ' . $file . ' ...' );
@@ -89,9 +89,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 			if ( isset( $schema->report ) ) {
 				$migrator->add_report( new Report( $report_name . '-URL-Report', array(
-							'Old URL',
-							'New URL'
-						) ), 'url' );
+					'Old URL',
+					'New URL'
+				) ), 'url' );
 			}
 
 			if ( isset( $schema->verify ) ) {
@@ -99,10 +99,10 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				$validator->setup( $schema->verify, $parser->get_content_count() );
 				$migrator->add_validator( $validator );
 				$migrator->add_report( new Report( $report_name . '-Validator-Report', array(
-							'Original Content Key',
-							'Post Title',
-							'Post URL'
-						) ), 'validator' );
+					'Original Content Key',
+					'Post Title',
+					'Post URL'
+				) ), 'validator' );
 			}
 
 			$migrator->run();
@@ -163,14 +163,16 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 			if ( $handle = opendir( EXODUS_DIR ) ) {
 				while ( false !== ( $file = readdir( $handle ) ) ) {
-					if ( $file !== "." && $file !== ".." && false !== strpos( strtolower( $file ), $file_slug .'.php' ) ) {
+					if ( $file !== "." && $file !== ".." && false !== strpos( strtolower( $file ), $file_slug . '.php' ) ) {
 						$files = $file;
 						break;
 					}
 				}
 				closedir( $handle );
 
-				return $files;
+				if ( isset( $files ) ) {
+					return $files;
+				}
 			}
 
 			return false;
