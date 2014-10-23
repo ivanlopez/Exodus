@@ -58,7 +58,7 @@ Map::factory()->create( 'post', function ( $data ) {
 } );
 ```
 
-** Available Schema Commands: **
+**Available Schema Commands:**
 
 `$key` stands for the key that the WordPress attribute represents in your content. For example in the JSON above the key for the post_content is "body".
 
@@ -83,7 +83,7 @@ Map::factory()->create( 'post', function ( $data ) {
 ```bash
 wp exodus schema my-first-migration --file=test-migration.json
 ```
-** Available configurations: **
+**Available configurations:**
 
 *  `<migration>` Name of the migration ( file name without .php )
 * `--file` Path to a valid file. Supported file formats are xml, sql, and json
