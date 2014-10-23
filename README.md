@@ -8,7 +8,7 @@ This module can be easily installed by adding `10up/exodus` to your `composer.js
 
 Exodus requires WP-CLI. Install it by following [these instructions](http://wp-cli.org).
 
-> Currently the library only support json migations but im planning on
+> Currently the library only support json migrations but im planning on
 > on creating parsers for sql and xml.
 
 ## Creating a Migration Schema Files
@@ -58,11 +58,16 @@ Map::factory()->create( 'post', function ( $data ) {
 } );
 ```
 
-** Avalilable Schema Commands: **
+** Available Schema Commands: **
 
 $key stands for the key that the WordPress element represents in your imported content. For example in the JSON above the key for the post_content is "body".
 
-| Command                              | Description                     |  
+<style>
+table th{ width: 50% }
+</style>
+
+
+| Commands                             | Description                     |
 | ------------------------------------ | ------------------------------- |
 | $data->post_type( $key );            | Map the post type attribute     |
 | $data->post_title( $key );           | Map the post title attribute    |
@@ -71,8 +76,8 @@ $key stands for the key that the WordPress element represents in your imported c
 | $data->post_excerpt( $key );         | Map the post excerpt            |
 | $data->post_date( $key );            | Map the post date               |
 | $data->post_date_gmt( $key );        | Map the post date GMT           |
-| $data->meta_data( $meta_key, $key ); | Map the meta data. This command takes two paramaters the first is the meta key it will have inside of WordPress and the second is the mapping $key. For each data set add a new command to the map.   |
-| $data->taxonomy( $taxonomy, $key );  | Map the taxonomy. This command takes two paramaters the first is the taxonomy key it will have inside of WordPress and the second is the mapping $key. For each taxonomyadd a new command to the map.      |
+| $data->meta_data( $meta_key, $key ); | Map the meta data. This command takes two parameters the first is the meta key it will have inside of WordPress and the second is the mapping $key. For each data set add a new command to the map.   |
+| $data->taxonomy( $taxonomy, $key );  | Map the taxonomy. This command takes two parameters the first is the taxonomy key it will have inside of WordPress and the second is the mapping $key. For each taxonomy add a new command to the map.      |
 
 ## Run a Migration
 ```bash
