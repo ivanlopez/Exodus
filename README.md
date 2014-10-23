@@ -60,11 +60,11 @@ Map::factory()->create( 'post', function ( $data ) {
 
 ** Available Schema Commands: **
 
-$key stands for the key that the WordPress element represents in your imported content. For example in the JSON above the key for the post_content is "body".
+`$key` stands for the key that the WordPress attribute represents in your content. For example in the JSON above the key for the post_content is "body".
 
-<style>
-table th{ width: 50% }
-</style>
+`$meta_key` stands for the key the meta data will have in WordPress.
+
+`$taxonomy` stands for the taxonomy label inside of WordPress.
 
 
 | Commands                             | Description                     |
@@ -76,8 +76,8 @@ table th{ width: 50% }
 | $data->post_excerpt( $key );         | Map the post excerpt            |
 | $data->post_date( $key );            | Map the post date               |
 | $data->post_date_gmt( $key );        | Map the post date GMT           |
-| $data->meta_data( $meta_key, $key ); | Map the meta data. This command takes two parameters the first is the meta key it will have inside of WordPress and the second is the mapping $key. For each data set add a new command to the map.   |
-| $data->taxonomy( $taxonomy, $key );  | Map the taxonomy. This command takes two parameters the first is the taxonomy key it will have inside of WordPress and the second is the mapping $key. For each taxonomy add a new command to the map.      |
+| $data->meta_data( $meta_key, $key ); | Map the meta data . For each data set add a new command.   |
+| $data->taxonomy( $taxonomy, $key );  | Map the taxonomy. For each taxonomy add a new command.     |
 
 ## Run a Migration
 ```bash
