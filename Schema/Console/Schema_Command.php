@@ -100,8 +100,8 @@ class Schema_Command {
 	 */
 	public static function sanitize_class_name( $name ) {
 		$class_parts = array();
-		$class       = preg_replace( '#[^a-zA-Z_]#', '', $name );
-		$class       = explode( '_', $name );
+		$class       = preg_replace( '#[^a-zA-Z_]#', '', str_replace('-', '_', $name ) );
+		$class       = explode( '_', $class );
 		foreach ( $class as $part ) {
 			$class_parts[] = ucwords( $part );
 		}
