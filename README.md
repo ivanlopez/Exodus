@@ -70,13 +70,13 @@ Map::factory()->create( 'post', function ( $data ) {
 
 | Commands                             | Description                               |
 | ------------------------------------ | ----------------------------------------- |
-| $data->post_type( $key );            | Map the post type attribute               |
-| $data->post_title( $key );           | Map the post title attribute              |
-| $data->post_content( $key );         | Map the post content attribute            |
-| $data->post_author( $key );          | Map the post author attribute             |
-| $data->post_excerpt( $key );         | Map the post excerpt                      |
-| $data->post_date( $key );            | Map the post date                         |
-| $data->post_date_gmt( $key );        | Map the post date GMT                     |
+| $data->post_type( $key );            | Map the post type attribute.              |
+| $data->post_title( $key );           | Map the post title attribute.             |
+| $data->post_content( $key );         | Map the post content attribute.           |
+| $data->post_author( $key );          | Map the post author attribute.            |
+| $data->post_excerpt( $key );         | Map the post excerpt.                     |
+| $data->post_date( $key );            | Map the post date.                        |
+| $data->post_date_gmt( $key );        | Map the post date GMT.                    |
 | $data->meta_data( $meta_key, $key ); | Map the meta data. One for each data set. |
 | $data->taxonomy( $taxonomy, $key );  | Map the taxonomy. One for each taxonomy.  |
 
