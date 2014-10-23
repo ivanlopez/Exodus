@@ -112,11 +112,12 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * Create migration schema file.
 		 *
 		 *  <name>          the name of your migration
-		 * --type           the type of migration. You can use json, sql or xml.
+		 * --type           the type of migration. You can use json, sql or xml
 		 * [--post_types]   comma delimited list of the post types that will be imported. By default it will only do post
-		 * [--site]         the id of the site you are migrating content to.
+		 * [--site]         the id of the site you are migrating content to
 		 * [--iterator]     the nesting of where the post are in your import file
 		 * [--report]       name of the url parameter in your import file in order to export a csv of old to new urls
+		 * [--verify]       percent (1-100) of random post to verify that were imported successfully
 		 *
 		 * @synopsis <name> --type=<schema_type> [--post_types=<types>] [--site=<site_id>]  [--iterator=<iterator>]  [--report=<url_key>]  [--verify=<percent>]
 		 */

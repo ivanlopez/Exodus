@@ -16,7 +16,7 @@ Exodus requires WP-CLI. Install it by following [these instructions](http://wp-c
 wp exodus schema my_first_migration --type=json
 ```
 
-Other available configurations:
+**Other available configurations:**
 
 *  `<name>` The name of your migration
 * `--type` The type of migration. You can use json, sql or xml
@@ -24,12 +24,61 @@ Other available configurations:
 * `[--site]` The id of the site you are migrating content to.
 * `[--iterator]` The nesting of where the post are in your import file
 * `[--report]` Name of the url parameter in your import file in order to export a csv of old to new urls
+* `[--verify]` Percent ( 1-100 ) of random post to verify that were imported successfully
+
+### Adding a Schema Map
+
+Sample JSON import file
+```bash
+[{
+"timestamp": 1408464060,
+"title": "Test title",
+"body": "Body content",
+"post_url": "http://test.com/test-title/",
+"post_id": 1234,
+"tags" : [ "Tag 1", "Tag 2"]
+},{
+"timestamp": 1408677660,
+"title": "Test title 2",
+"body": "Body content 2",
+"post_url": "http://test.com/test-title-2/",
+"post_id": 1234,
+"tags" : []
+}]'
+```
+
+```bash
+Map::factory()->create( 'post', function ( $data ) {
+	$data->post_title( 'title' );
+	$data->post_content( 'body' );
+	$data->post_date( 'timestamp' );
+	$data->meta_data( 'post_url', 'post_url' );
+	$data->meta_data( 'post_id', 'id' );
+	$data->taxonomy( 'post_tag', 'tags' );
+} );
+```
+
+** Avalilable Schema Commands: **
+
+$key stands for the key that the WordPress element represents in your imported content. For example in the JSON above the key for the post_content is "body".
+
+| Command                              | Description                     |  
+| ------------------------------------ | ------------------------------- |
+| $data->post_type( $key );            | Map the post type attribute     |
+| $data->post_title( $key );           | Map the post title attribute    |
+| $data->post_content( $key );         | Map the post content attribute  |
+| $data->post_author( $key );          | Map the post author attribute   |
+| $data->post_excerpt( $key );         | Map the post excerpt            |
+| $data->post_date( $key );            | Map the post date               |
+| $data->post_date_gmt( $key );        | Map the post date GMT           |
+| $data->meta_data( $meta_key, $key ); | Map the meta data. This command takes two paramaters the first is the meta key it will have inside of WordPress and the second is the mapping $key. For each data set add a new command to the map.   |
+| $data->taxonomy( $taxonomy, $key );  | Map the taxonomy. This command takes two paramaters the first is the taxonomy key it will have inside of WordPress and the second is the mapping $key. For each taxonomyadd a new command to the map.      |
 
 ## Run a Migration
 ```bash
 wp exodus schema my-first-migration --file=test-migration.json
 ```
-Available configurations:
+** Available configurations: **
 
 *  `<migration>` Name of the migration ( file name without .php )
 * `--file` Path to a valid file. Supported file formats are xml, sql, and json
