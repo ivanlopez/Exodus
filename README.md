@@ -16,7 +16,7 @@ Exodus requires WP-CLI. Install it by following [these instructions](http://wp-c
 wp exodus schema my_first_migration --type=json
 ```
 
-**Other available configurations:**
+**Other available Configurations:**
 
 *  `<name>` The name of your migration
 * `--type` The type of migration. You can use json, sql or xml
@@ -83,7 +83,7 @@ Map::factory()->create( 'post', function ( $data ) {
 ```bash
 wp exodus schema my-first-migration --file=test-migration.json
 ```
-**Available configurations:**
+**Available Configurations:**
 
 *  `<migration>` Name of the migration ( file name without .php )
 * `--file` Path to a valid file. Supported file formats are xml, sql, and json
