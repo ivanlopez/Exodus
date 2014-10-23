@@ -69,7 +69,7 @@ class Migrator extends Base_Importer {
 				}
 			}
 			$notify->finish();
-			\WP_CLI::success( 'Your migration is complete. ' . $count . ' of ' . $total . ' post were migrated successfully' );
+			\WP_CLI::success( 'Your migration is complete. ' . $count . ' of ' . $total . ' post were migrated successfully!' );
 
 			if ( isset( $this->report ) ) {
 				$this->report->generate( EXODUS_DIR );

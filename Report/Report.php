@@ -46,6 +46,6 @@ class Report {
 
 		fclose($report);
 
-		\WP_CLI::success( 'Your migration report was generated' );
+		\WP_CLI::success( 'Your migration report was generated!' );
 	}
 }

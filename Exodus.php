@@ -50,17 +50,17 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			if ( false !== strpos( $file, '.xml' ) || false !== strpos( $file, '.sql' ) || false !== strpos( $file, '.json' ) ) {
 				\WP_CLI::line( 'Loading ' . $file . ' ...' );
 			} else {
-				\WP_CLI::error( 'Error: a valid file type must be provided' );
+				\WP_CLI::error( 'Error: A valid file type must be provided.' );
 			}
 
 			$data = file_get_contents( $file );
 
 			if ( ! $data ) {
-				\WP_CLI::error( 'Error: could not load the specified file' );
+				\WP_CLI::error( 'Error: Could not load the specified file.' );
 			}
 
 			if ( ! $migration_files = $this->get_migration_files() ) {
-				\WP_CLI::error( 'Error: a schema file must be generate' );
+				\WP_CLI::error( 'Error: A schema file needs to be generated first.' );
 			}
 
 			foreach ( $migration_files as $file ) {
@@ -70,15 +70,15 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				switch ( $schema->type ) {
 					case 'json':
 						$parser = new JSON( $data, $schema );
-						\WP_CLI::line( 'Parsing data ...' );
+						\WP_CLI::line( 'Parsing JSON data ...' );
 						break;
 					case 'sql':
 						#TODO: SQL parser still needs to be created
-						\WP_CLI::error( 'Error: SQL parser still needs to be created' );
+						\WP_CLI::error( 'Error: SQL parser still needs to be created.' );
 						break;
 					case 'xml':
 						#TODO: XML parser still needs to be created
-						\WP_CLI::error( 'Error: XML parser still needs to be created' );
+						\WP_CLI::error( 'Error: XML parser still needs to be created.' );
 						break;
 				}
 
@@ -123,7 +123,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			$schema = new Schema_Command( EXODUS_DIR );
 			$schema->create_migration_file( $schema_args );
 
-			\WP_CLI::success( $schema_args['name'] . ' migration file was generated' );
+			\WP_CLI::success( $schema_args['name'] . ' migration file was generated. You can find the migration file in the wp-content/migrations/ directory.' );
 		}
 
 		/**
