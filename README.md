@@ -1,7 +1,7 @@
 Exodus
 ====================
 
-Exodus is a content migration library that allows you to dynamically create content migrations.
+Content migration library that allows you to dynamically create content migrations independent of the data structure.
 
 ## Installation
 This module can be easily installed by adding `10up/exodus` to your `composer.json` file. Then, either autoload your Composer dependencies or manually `include()` the `Exodus.php` bootstrap file.
