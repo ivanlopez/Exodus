@@ -24,4 +24,5 @@ class TestCase extends BaseTestCase {
 		$method->setAccessible( true );
 		return $method->invokeArgs( $object, $parameters );
 	}
+
 }

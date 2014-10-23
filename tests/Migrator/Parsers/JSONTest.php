@@ -8,9 +8,13 @@ class JSONTest extends TestCase{
 
 	protected $json_parser;
 
+	public static function setUpBeforeClass() {
+		require_once  dirname( dirname( __DIR__ ) ) . '/test-tools/wp-cli-mock.php';
+	}
+
 	public function setUp() {
 		parent::setUp();
-		$schema = Mockery::mock( 'TenUp\Exodus\Schema\Base_Schema' );
+		$schema = \Mockery::mock( 'TenUp\Exodus\Schema\Base_Schema' );
 		$schema->shouldReceive( 'build' )->andReturn( $this->get_schema_build() )->once();
 		$schema->shouldReceive( 'keys' )->andReturn( $this->get_key_build() )->once();
 

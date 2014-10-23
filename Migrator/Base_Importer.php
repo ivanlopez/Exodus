@@ -16,7 +16,7 @@ abstract class Base_Importer {
 	 *
 	 * @return int|\WP_Error
 	 */
-	protected function insert_post( $data, $force = false, $pretend = false ) {
+	public function insert_post( $data, $force = false, $pretend = false ) {
 		global $wpdb;
 
 		if ( $pretend ) {
@@ -149,13 +149,12 @@ abstract class Base_Importer {
 	 * @return bool|int|null|\WP_Error
 	 */
 	protected function user( $user ) {
-
 		if ( $user_id = email_exists( $user->user_email ) ) {
 			return $user_id;
 		} else if ( $user_id = username_exists( sanitize_user( $user->user_login ) ) ) {
 			return $user_id;
 		} else {
-			$userdata = array(
+			$user_data = array(
 				'user_login'    => sanitize_user( $user->user_login ),
 				'user_pass'     => wp_generate_password(),
 				'user_nicename' => $user->user_login,
@@ -166,7 +165,7 @@ abstract class Base_Importer {
 				'user_email'    => isset( $user->user_email ) ? $user->user_email : '',
 			);
 
-			$user_id = wp_insert_user( $userdata );
+			$user_id = wp_insert_user( $user_data );
 
 			if ( ! is_wp_error( $user_id ) ) {
 				return $user_id;
@@ -210,6 +209,7 @@ abstract class Base_Importer {
 
 				$path = $match[2];
 				$id   = $this->upload_media( $path, $post_id );
+
 				if ( $id ) {
 					$src = wp_get_attachment_url( $id );
 
@@ -251,6 +251,7 @@ abstract class Base_Importer {
 		}
 
 		$tmp = download_url( $old_filename );
+
 		preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
 
 		// make sure we have a match.  This won't be set for PDFs and .docs
