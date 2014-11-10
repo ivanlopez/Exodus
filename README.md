@@ -82,7 +82,7 @@ Map::factory()->create( 'post', function ( $data ) {
 
 ## Run a Migration
 ```bash
-wp exodus schema my-first-migration --file=test-migration.json
+wp exodus migrate my-first-migration --file=test-migration.json
 ```
 **Available Configurations:**
 
